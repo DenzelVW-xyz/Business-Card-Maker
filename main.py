@@ -5,7 +5,7 @@ import shlex
 import subprocess
 
 import qrcode
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageFont
 
 # Clear command
 if platform.system() == "Windows":
@@ -75,17 +75,19 @@ qr_image = create_qr_code(qrcode_data)
 qr_image = qr_image.resize((250, 250), Image.Resampling.NEAREST)
 card_background.paste(qr_image, (0, 0))  # Add qr_image
 
+
 # Create a title and a dynamically scale to a textbox
-draw = ImageDraw.Draw(card_background)
-font_size = 65
-font = ImageFont.truetype(os.path.join(root_dir, "fonts", "Caudex-Bold.ttf"), font_size)
-max_width = 550
-while draw.textlength(text=card_title, font=font) > max_width:
-    font_size -= 1
-    font = ImageFont.truetype(
-        os.path.join(root_dir, "fonts", "Caudex-Bold.ttf"), font_size
-    )
-draw.text((525, 10), card_title, fill=(0, 0, 0), font=font, anchor="mt")  # Add draw
+def draw_text(draw, text, x, y, max_width=550, font_size=65):
+    font_path = os.path.join(root_dir, "fonts", "Caudex-Bold.ttf")
+
+    font = ImageFont.truetype(font_path, font_size)
+
+    while draw.textlength(text, font=font) > max_width and font_size > 1:
+        font_size -= 1
+        font = ImageFont.truetype(font_path, font_size)
+
+    draw.text((x, y), text, fill=(0, 0, 0), font=font, anchor="mt")
+
 
 # Add Logo to the top right of the card
 try:
