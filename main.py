@@ -122,7 +122,7 @@ card_background.paste(logo, (x, y), logo)
 # Add Details To Business card
 for index, (key, value) in enumerate(details.items()):
     draw_text(
-        draw, f"{key}: {value}", x=525, y=270 + index * 65, max_width=900, font_size=40
+        draw, f"{key}: {value}", x=100, y=270 + index * 65, max_width=900, font_size=40
     )
 
 # Save and cleanup
